@@ -1,0 +1,124 @@
+**Three.js for Nova** is a comprehensive autocomplete extension that provides intelligent code completion for the popular 3D graphics library.
+
+## Features
+
+- 🤖 **Auto-generated completions** directly from @types/three TypeScript definitions!
+- 📈 **Comprehensive autocomplete** for 100+ Three.js classes
+- 🎯 **Context-aware suggestions**—shows relevant completions based on your code context
+- 📚 **Detailed documentation**—each completion includes descriptions and parameter info
+- 🚀 **Support for modern Three.js**—includes latest classes and methods
+- 💡 **ES6 imports**—autocomplete for import statements
+- ⚡ **Fast and lightweight**—minimal performance impact
+
+## Supported Three.js Features
+
+### Core Classes
+- Scene, Camera (Perspective, Orthographic)
+- WebGLRenderer, WebGPURenderer
+- Object3D, Mesh, Group, Line, Points, Sprite
+
+### Geometries
+- BoxGeometry, SphereGeometry, PlaneGeometry, CylinderGeometry
+- TorusGeometry, TorusKnotGeometry, and many more
+- BufferGeometry and custom geometry support
+
+### Materials
+- MeshStandardMaterial, MeshPhysicalMaterial, MeshBasicMaterial
+- MeshPhongMaterial, MeshLambertMaterial, MeshToonMaterial
+- ShaderMaterial, RawShaderMaterial, and more
+
+### Lights
+- AmbientLight, DirectionalLight, PointLight, SpotLight
+- HemisphereLight, RectAreaLight
+
+### Textures & Loaders
+- TextureLoader, CubeTextureLoader, GLTFLoader
+- Various texture types (Canvas, Video, Data, Compressed)
+
+### Math Utilities
+- Vector2, Vector3, Vector4
+- Matrix3, Matrix4
+- Quaternion, Euler
+- Color, Ray, Plane, Sphere, Box3
+
+### Controls & Helpers
+- OrbitControls, TrackballControls, FlyControls
+- AxesHelper, GridHelper, CameraHelper
+- Light helpers and geometry helpers
+
+### Animation
+- AnimationMixer, AnimationClip, AnimationAction
+- KeyframeTrack
+
+### And Much More!
+- Audio (Audio, PositionalAudio, AudioListener)
+- Curves (Bezier, Catmull-Rom, Spline)
+- Raycaster, Clock, LOD, Skeleton
+
+## Usage
+
+Once installed, the extension will automatically provide autocomplete suggestions when you're working with Three.js:
+
+### Example 1: Using THREE namespace
+```javascript
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+
+// Type "THREE." to see all available classes and constants
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+
+scene.add(cube);
+```
+
+### Example 2: ES6 Imports
+```javascript
+// Type after "from 'three'" to get import suggestions
+import { Scene, PerspectiveCamera, WebGLRenderer } from 'three';
+
+const scene = new Scene();
+const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+```
+
+### Example 3: Methods and Properties
+```javascript
+// After typing a dot after an object, get method suggestions
+scene.add(cube);
+cube.position.set(0, 0, 0);
+cube.rotation.x = Math.PI / 4;
+```
+
+## Configuration
+
+You can configure the extension in Nova's preferences:
+
+- **Enable Three.js Completions**: Toggle autocomplete on/off
+
+## Compatibility
+
+- **Nova**: 11.0 or later
+- **Three.js**: r158 and later (compatible with most recent versions)
+- **Languages**: JavaScript, TypeScript
+
+## Resources
+
+- [Three.js Documentation](https://threejs.org/docs/)
+- [Three.js GitHub](https://github.com/mrdoob/three.js)
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Respect
+
+🫂 Thanks to the Three.js community.
+
+3️⃣ Three.js is created and maintained by [Ricardo Cabello "Mr.doob"](https://github.com/mrdoob) and the [Three.js contributors](https://github.com/mrdoob/three.js/graphs/contributors).
+
+## Support
+
+If you encounter any problems [please open an issue on GitHub](https://github.com/gingerbeardman/ThreeJS-for-Nova/issues).

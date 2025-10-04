@@ -1,0 +1,34 @@
+{
+  "identifier": "com.gingerbeardman.threejs.completions",
+  "name": "Three.js",
+  "organization": "Matt Sephton",
+  "description": "Provides intelligent autocomplete support for Three.js library classes, methods, and properties",
+  "version": "1.0.0",
+  "categories": ["completions", "javascript"],
+  "license": "MIT",
+  "repository": "https://github.com/gingerbeardman/ThreeJS-for-Nova",
+  "bugs": "https://github.com/gingerbeardman/ThreeJS-for-Nova/issues",
+  "homepage": "https://www.gingerbeardman.com",
+  "funding": "https://ko-fi.com/gingerbeardman",
+  
+  "main": "Scripts/main.js",
+  
+  "activationEvents": [
+    "onLanguage:javascript"
+  ],
+  
+  "entitlements": {
+    "completions": true
+  },
+  
+  "config": [
+    {
+      "key": "threejs.enableCompletions",
+      "title": "Enable Three.js Completions",
+      "description": "Enable or disable Three.js autocomplete suggestions",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}
+
