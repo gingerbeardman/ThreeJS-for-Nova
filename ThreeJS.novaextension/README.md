@@ -2,7 +2,7 @@
 
 ## Features
 
-- 🤖 **Auto-generated completions** directly from @types/three TypeScript definitions!
+- 🤖 **Auto-generated** directly from @types/three TypeScript definitions!
 - 📈 **Comprehensive autocomplete** for 100+ Three.js classes
 - 🎯 **Context-aware suggestions**—shows relevant completions based on your code context
 - 📚 **Detailed documentation**—each completion includes descriptions and parameter info
