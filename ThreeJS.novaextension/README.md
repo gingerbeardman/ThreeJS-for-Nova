@@ -5,6 +5,7 @@
 - 🤖 **Auto-generated** directly from @types/three TypeScript definitions!
 - 📈 **Comprehensive autocomplete** for 100+ Three.js classes
 - 🎯 **Context-aware suggestions**—shows relevant completions based on your code context
+- 🎨 **Color picker support**—visual color pickers for HEX (0xRRGGBB) and HSL (setHSL)
 - 📚 **Detailed documentation**—each completion includes descriptions and parameter info
 - 🚀 **Support for modern Three.js**—includes latest classes and methods
 - 💡 **ES6 imports**—autocomplete for import statements
@@ -90,6 +91,16 @@ const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight,
 scene.add(cube);
 cube.position.set(0, 0, 0);
 cube.rotation.x = Math.PI / 4;
+```
+
+### Example 4: Color Picker
+```javascript
+// Click on any Three.js color value to open a visual color picker
+const material = new THREE.MeshBasicMaterial({ color: 0x669966 });
+const light = new THREE.AmbientLight(0xffffff);
+
+// Also works with HSL colors
+const color = new THREE.Color().setHSL(0.15, 0.7, 0.8);
 ```
 
 ## Configuration

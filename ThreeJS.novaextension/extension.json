@@ -3,7 +3,7 @@
   "name": "Three.js",
   "organization": "Matt Sephton",
   "description": "Provides intelligent autocomplete support for Three.js library classes, methods, and properties",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "categories": ["completions"],
   "license": "MIT",
   "repository": "https://github.com/gingerbeardman/ThreeJS-for-Nova",
