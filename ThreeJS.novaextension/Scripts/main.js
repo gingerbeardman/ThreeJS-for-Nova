@@ -210,6 +210,89 @@ class ThreeJSCompletionsProvider {
     }
 }
 
+// Three.js Color Assistant
+// Provides color picker support for Three.js hex colors (0xRRGGBB) and HSL colors (setHSL)
+class ThreeJSColorAssistant {
+    provideColors(editor, context) {
+        try {
+            const colors = [];
+            
+            // Scan the entire document for color values
+            // Note: Nova manages when to call this, typically not on every keystroke
+            const text = editor.document.getTextInRange(new Range(0, editor.document.length));
+            
+            // Match Three.js hex color format: 0x669966
+            const hexRegex = /\b(0x[0-9A-Fa-f]{6})\b/g;
+            let match;
+            
+            while ((match = hexRegex.exec(text)) !== null) {
+                const hexValue = match[1].substring(2); // Remove "0x" prefix
+                
+                // Convert hex to RGB (0-255 to 0-1 range)
+                const r = parseInt(hexValue.substring(0, 2), 16) / 255;
+                const g = parseInt(hexValue.substring(2, 4), 16) / 255;
+                const b = parseInt(hexValue.substring(4, 6), 16) / 255;
+                
+                const color = new Color('rgb', [r, g, b, 1.0]);
+                const range = new Range(match.index, match.index + match[0].length);
+                
+                colors.push(new ColorInformation(range, color));
+            }
+            
+            // Match Three.js HSL colors: setHSL(0.15, 0.7, 0.8)
+            const hslRegex = /setHSL\s*\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*\)/g;
+            
+            while ((match = hslRegex.exec(text)) !== null) {
+                const h = parseFloat(match[1]);
+                const s = parseFloat(match[2]);
+                const l = parseFloat(match[3]);
+                
+                // Three.js HSL: 0-1, Nova HSL: h=0-360, s,l=0-1
+                const color = new Color('hsl', [h * 360, s, l, 1.0]);
+                const range = new Range(match.index, match.index + match[0].length);
+                
+                colors.push(new ColorInformation(range, color));
+            }
+            
+            return colors;
+        } catch (error) {
+            console.error('ThreeJS Color Assistant Error:', error);
+            return [];
+        }
+    }
+    
+    // Convert edited color back to Three.js format
+    provideColorPresentations(color, editor, context) {
+        try {
+            const originalText = editor.document.getTextInRange(context.range);
+            
+            // Determine if we're working with HSL or hex format
+            if (originalText.startsWith('setHSL')) {
+                // Convert back to HSL format (Nova: h=0-360, s,l=0-1 → Three.js: all 0-1)
+                const h = (color.components[0] / 360).toFixed(2);
+                const s = color.components[1].toFixed(2);
+                const l = color.components[2].toFixed(2);
+                
+                return [new ColorPresentation(`setHSL(${h}, ${s}, ${l})`)];
+            } else {
+                // Convert RGB to hex format (0xRRGGBB)
+                const r = Math.round(color.components[0] * 255);
+                const g = Math.round(color.components[1] * 255);
+                const b = Math.round(color.components[2] * 255);
+                
+                const hex = [r, g, b]
+                    .map(c => c.toString(16).toUpperCase().padStart(2, '0'))
+                    .join('');
+                
+                return [new ColorPresentation(`0x${hex}`)];
+            }
+        } catch (error) {
+            console.error('ThreeJS Color Assistant Error:', error);
+            return [];
+        }
+    }
+}
+
 exports.activate = function() {
     console.log('Three.js Completions Extension Activated');
 
@@ -224,9 +307,13 @@ exports.activate = function() {
         syntax: 'typescript',
         triggerChars: new Charset('.')
     });
+
+    // Register color assistant for JavaScript and TypeScript
+    const colorAssistant = new ThreeJSColorAssistant();
+    nova.assistants.registerColorAssistant('javascript', colorAssistant);
+    nova.assistants.registerColorAssistant('typescript', colorAssistant);
 };
 
 exports.deactivate = function() {
     console.log('Three.js Completions Extension Deactivated');
 };
-
