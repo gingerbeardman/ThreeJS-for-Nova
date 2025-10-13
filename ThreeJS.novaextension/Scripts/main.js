@@ -997,6 +997,7 @@ exports.activate = function() {
     const colorAssistant = new ThreeJSColorAssistant();
     nova.assistants.registerColorAssistant('javascript', colorAssistant);
     nova.assistants.registerColorAssistant('typescript', colorAssistant);
+    nova.assistants.registerColorAssistant('html', colorAssistant);
 };
 
 exports.deactivate = function() {
