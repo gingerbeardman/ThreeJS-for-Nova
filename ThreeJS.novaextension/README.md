@@ -156,7 +156,7 @@ You can configure the extension in Nova's preferences:
 
 - **Nova**: 11.0 or later
 - **Three.js**: r158 and later (compatible with most recent versions)
-- **Languages**: JavaScript, TypeScript
+- **Languages**: JavaScript, TypeScript, HTML
 
 ## Resources
 
