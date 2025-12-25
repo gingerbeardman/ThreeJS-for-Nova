@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.2.3
+
+- Added color picker support for hex colors in object literals (e.g., `hex: '#4789b2'`)
+
 ## Version 1.2.0
 
 - Added color picker support for Three.js colors in all formats

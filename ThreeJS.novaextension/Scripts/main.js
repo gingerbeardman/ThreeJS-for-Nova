@@ -607,6 +607,26 @@ class ThreeJSColorAssistant {
                 }
             }
 
+            // Match hex colors in object literals: hex: '#4789b2' or hex: "#4789b2"
+            const objHexRegex = /hex\s*:\s*(['"])(#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}))\1/g;
+            while ((match = objHexRegex.exec(text)) !== null) {
+                if (this.isInComment(text, match.index)) continue;
+                let hex = match[2]; // '#RGB' or '#RRGGBB'
+                if (hex.length === 4) {
+                    // Expand #RGB to #RRGGBB
+                    hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+                }
+                const r = parseInt(hex.substring(1, 3), 16) / 255;
+                const g = parseInt(hex.substring(3, 5), 16) / 255;
+                const b = parseInt(hex.substring(5, 7), 16) / 255;
+                const color = new Color('rgb', [r, g, b, 1.0]);
+                // Find the position of just the quoted hex value
+                const hexStart = text.indexOf(match[1] + match[2], match.index);
+                const hexEnd = hexStart + match[1].length + match[2].length + match[1].length;
+                const range = new Range(hexStart, hexEnd);
+                colors.push(new ColorInformation(range, color));
+            }
+
             return colors;
         } catch (error) {
             console.error('ThreeJS Color Assistant Error:', error);
@@ -930,6 +950,45 @@ class ThreeJSColorAssistant {
                     .map(c => c.toString(16).toUpperCase().padStart(2, '0'))
                     .join('');
                 return [new ColorPresentation(`setHex(0x${hex})`)];
+            } else if (/^['"]#/.test(originalText)) {
+                // Object literal hex format: '#4789b2' or "#4789b2"
+                const objHexMatch = originalText.match(/^(['"])(#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6})\1$/);
+                if (objHexMatch) {
+                    const quote = objHexMatch[1];
+                    const originalHex = objHexMatch[2].substring(1); // Remove #
+                    const r = Math.round(color.components[0] * 255);
+                    const g = Math.round(color.components[1] * 255);
+                    const b = Math.round(color.components[2] * 255);
+
+                    // Parse original to check if unchanged
+                    let origR, origG, origB;
+                    if (originalHex.length === 3) {
+                        origR = parseInt(originalHex[0] + originalHex[0], 16);
+                        origG = parseInt(originalHex[1] + originalHex[1], 16);
+                        origB = parseInt(originalHex[2] + originalHex[2], 16);
+                    } else {
+                        origR = parseInt(originalHex.substring(0, 2), 16);
+                        origG = parseInt(originalHex.substring(2, 4), 16);
+                        origB = parseInt(originalHex.substring(4, 6), 16);
+                    }
+
+                    if (r === origR && g === origG && b === origB) {
+                        return [new ColorPresentation(originalText)];
+                    }
+
+                    // Preserve case from original
+                    const isUpperCase = originalHex === originalHex.toUpperCase();
+                    let hex = `${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                    hex = isUpperCase ? hex.toUpperCase() : hex.toLowerCase();
+                    return [new ColorPresentation(`${quote}#${hex}${quote}`)];
+                }
+
+                // Fallback
+                const r = Math.round(color.components[0] * 255);
+                const g = Math.round(color.components[1] * 255);
+                const b = Math.round(color.components[2] * 255);
+                const hex = `${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                return [new ColorPresentation(`'#${hex}'`)];
             } else {
                 // Parse original hex value to check if color changed
                 const originalHexMatch = originalText.match(/0x([0-9A-Fa-f]{6})/);
